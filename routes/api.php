@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix'=>'v1'], function (){
-    Route::resource('users',\App\Http\Controllers\UserController::class)->only(['create','edit','destroy']);
+
 });

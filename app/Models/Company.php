@@ -10,7 +10,6 @@ class Company extends Model
     use HasFactory;
     protected $table = "companies";
     protected $guarded = [];
-
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class,'company_id','id');
@@ -39,5 +38,10 @@ class Company extends Model
     {
         return $this->hasMany(Rating::class,'company_id','id')
             ->where('company_id', auth()->user()->company()->id);
+    }
+    public function applied_worker(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(VacationApply::class,'company_id','id')
+            ->where('company_delete','=','0');
     }
 }

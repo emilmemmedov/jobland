@@ -45,9 +45,10 @@ Route::group(['prefix'=>'v1'], function (){
         Route::post('interview/accept',[\App\Http\Controllers\InterviewController::class,'acceptInterview']);
         Route::post('interview/reject',[\App\Http\Controllers\InterviewController::class,'acceptReject']);
 
-        Route::post('vacation/worker/apply',[\App\Http\Controllers\VacationController::class,'applyVacation']);
+        Route::post('vacation/worker/apply',[\App\Http\Controllers\VacationApplyController::class,'applyVacation']);
+        Route::delete('vacation/worker/delete/{id}',[\App\Http\Controllers\VacationApplyController::class,'deleteApplyVacation']);
 
-        Route::get('vacation/for/worker',[\App\Http\Controllers\VacationController::class,'specialVacation']);
+        Route::get('vacation/for/worker',[\App\Http\Controllers\VacationController::class,'specialVacations']);
 
         //------------- For Businessman -------------
 
@@ -57,8 +58,9 @@ Route::group(['prefix'=>'v1'], function (){
 
         Route::post('interview/offer',[\App\Http\Controllers\InterviewController::class,'offerInterview']);
 
-        Route::post('vacation/worker/accept',[\App\Http\Controllers\VacationController::class,'acceptVacation']);
-        Route::post('vacation/worker/reject',[\App\Http\Controllers\VacationController::class,'rejectVacation']);
+        Route::post('vacation/worker/accept',[\App\Http\Controllers\VacationApplyController::class,'acceptVacation']);
+        Route::post('vacation/worker/reject',[\App\Http\Controllers\VacationApplyController::class,'rejectVacation']);
+        Route::delete('vacation/worker/delete/{id}',[\App\Http\Controllers\VacationApplyController::class,'deleteApplyVacation']);
 
         Route::get('worker/for/vacation/{id}',[\App\Http\Controllers\WorkerController::class,'specialWorker']);
 

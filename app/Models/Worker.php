@@ -41,4 +41,10 @@ class Worker extends Model
         return $this->hasMany(Rating::class,'worker_id','id')
             ->where('worker_id', auth()->user()->worker()->id);
     }
+
+    public function applied_vacation(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(VacationApply::class,'worker_id','id')
+            ->where('worker_delete','=','0');
+    }
 }

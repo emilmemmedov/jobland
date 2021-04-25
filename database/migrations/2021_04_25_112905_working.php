@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Ratings extends Migration
+class Working extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class Ratings extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('working', function (Blueprint $table) {
             $table->id();
             $table->integer('company_id');
             $table->integer('worker_id');
+            $table->integer('status'); //0-not working, 1-working,
             $table->integer('rating');
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ class Ratings extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ratings');
+        Schema::dropIfExists('working');
     }
 }

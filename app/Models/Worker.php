@@ -48,4 +48,8 @@ class Worker extends Model
         return $this->hasMany(VacationApply::class,'worker_id','id')
             ->where('worker_delete','=','0');
     }
+    public function works(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Working::class,'worker_id','id');
+    }
 }

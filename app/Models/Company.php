@@ -32,7 +32,8 @@ class Company extends Model
 
     public function interviews(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Interview::class,'company_id','id');
+        return $this->hasMany(Interview::class,'company_id','id')
+            ->where('company_delete','=','0');
     }
     public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

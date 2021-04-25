@@ -44,11 +44,12 @@ Route::group(['prefix'=>'v1'], function (){
 
         Route::post('interview/accept',[\App\Http\Controllers\InterviewController::class,'acceptInterview']);
         Route::post('interview/reject',[\App\Http\Controllers\InterviewController::class,'acceptReject']);
+        Route::delete('interview/delete/{id}',[\App\Http\Controllers\InterviewController::class,'deleteInterview']);
 
         Route::post('vacation/worker/apply',[\App\Http\Controllers\VacationApplyController::class,'applyVacation']);
         Route::delete('vacation/worker/delete/{id}',[\App\Http\Controllers\VacationApplyController::class,'deleteApplyVacation']);
 
-        Route::get('vacation/for/worker',[\App\Http\Controllers\VacationController::class,'specialVacations']);
+        Route::get('vacation/for/worker',[\App\Http\Controllers\WorkerController::class,'specialVacations']);
 
         //------------- For Businessman -------------
 
@@ -57,12 +58,15 @@ Route::group(['prefix'=>'v1'], function (){
         Route::put('vacation/update/{id}',[\App\Http\Controllers\VacationController::class,'update']);
 
         Route::post('interview/offer',[\App\Http\Controllers\InterviewController::class,'offerInterview']);
+        Route::delete('interview/delete/{id}',[\App\Http\Controllers\InterviewController::class,'deleteInterview']);
+        Route::post('accept/worker',[\App\Http\Controllers\CompanyController::class,'acceptWorker']);
+        Route::post('reject/worker',[\App\Http\Controllers\CompanyController::class,'rejectWorker']);
 
         Route::post('vacation/worker/accept',[\App\Http\Controllers\VacationApplyController::class,'acceptVacation']);
         Route::post('vacation/worker/reject',[\App\Http\Controllers\VacationApplyController::class,'rejectVacation']);
         Route::delete('vacation/worker/delete/{id}',[\App\Http\Controllers\VacationApplyController::class,'deleteApplyVacation']);
 
-        Route::get('worker/for/vacation/{id}',[\App\Http\Controllers\WorkerController::class,'specialWorker']);
+        Route::get('worker/for/vacation/{id}',[\App\Http\Controllers\CompanyController::class,'specialWorker']);
 
     });
 });

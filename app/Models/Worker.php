@@ -33,7 +33,8 @@ class Worker extends Model
 
     public function interviews(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Interview::class,'worker_id','id');
+        return $this->hasMany(Interview::class,'worker_id','id')
+            ->where('worker_delete','=','0');
     }
 
     public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany

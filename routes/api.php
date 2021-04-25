@@ -35,7 +35,13 @@ Route::group(['prefix'=>'v1'], function (){
         Route::get('worker',[\App\Http\Controllers\WorkerController::class,'index']);
         Route::get('worker/{id}',[\App\Http\Controllers\WorkerController::class,'show']);
 
-        //after authenticated
+
+        //------------------------------- AUTHENTICATE START ------------------------------------
+        Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
+        Route::post('signup',[\App\Http\Controllers\AuthController::class,'signup']);
+        Route::post('logout',[\App\Http\Controllers\AuthController::class,'logout']);
+        Route::post('refresh',[\App\Http\Controllers\AuthController::class,'refresh']);
+        //-------------------------------- AUTHENTICATE END ------------------------------------
 
         //------------- For Worker ------------
 

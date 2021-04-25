@@ -59,4 +59,20 @@ class User extends Authenticatable
     public function getUserType(){
         return auth()->user()->type;
     }
+
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

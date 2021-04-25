@@ -22,11 +22,6 @@ class Interview extends Model
         return $this->belongsTo(Company::class,'id','company_id');
     }
 
-    public function rejectedUser(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(User::class,'id','reject_user_id');
-    }
-
     public function getRejectedOfferType(){
         return auth()->user()->reject_offer_by;
     }

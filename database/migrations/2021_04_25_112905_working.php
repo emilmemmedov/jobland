@@ -18,6 +18,8 @@ class Working extends Migration
             $table->integer('company_id');
             $table->integer('worker_id');
             $table->integer('status'); //0-not working, 1-working,
+            $table->integer('resigned_by'); //1-company, 2-worker
+            $table->string('resigned_reason');
             $table->integer('rating');
             $table->timestamps();
         });

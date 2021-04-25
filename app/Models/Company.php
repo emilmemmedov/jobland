@@ -35,11 +35,7 @@ class Company extends Model
         return $this->hasMany(Interview::class,'company_id','id')
             ->where('company_delete','=','0');
     }
-    public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Rating::class,'company_id','id')
-            ->where('company_id', auth()->user()->company()->id);
-    }
+
     public function applied_worker(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(VacationApply::class,'company_id','id')

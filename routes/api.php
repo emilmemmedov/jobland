@@ -40,6 +40,7 @@ Route::group(['prefix'=>'v1'], function (){
         //------------- For Worker ------------
 
         Route::get('user',[\App\Http\Controllers\UserController::class,'index']); // both worker and businessman and admin
+        Route::put('user/update',[\App\Http\Controllers\UserController::class,'update']); // both worker and businessman and admin
 
         Route::post('interview/accept',[\App\Http\Controllers\InterviewController::class,'acceptInterview']);
         Route::post('interview/reject',[\App\Http\Controllers\InterviewController::class,'acceptReject']);
@@ -52,7 +53,7 @@ Route::group(['prefix'=>'v1'], function (){
 
         Route::post('vacation/create',[\App\Http\Controllers\VacationController::class,'create']);
         Route::delete('vacation/delete/{id}',[\App\Http\Controllers\VacationController::class,'delete']);
-        Route::put('vacation/update',[\App\Http\Controllers\VacationController::class,'update']);
+        Route::put('vacation/update/{id}',[\App\Http\Controllers\VacationController::class,'update']);
 
         Route::post('interview/offer',[\App\Http\Controllers\InterviewController::class,'offerInterview']);
 

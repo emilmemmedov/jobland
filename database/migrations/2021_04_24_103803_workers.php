@@ -18,7 +18,7 @@ class Workers extends Migration
             $table->integer('min_salary');
             $table->integer('max_salary');
             $table->string('description');
-            $table->integer('total_rating');
+            $table->integer('total_rating')->nullable();
             $table->integer('category_id');
             $table->timestamps();
         });

@@ -37,8 +37,8 @@ Route::group(['prefix'=>'v1'], function (){
 
 
         //------------------------------- AUTHENTICATE START ------------------------------------
-        Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);
-        Route::post('signup',[\App\Http\Controllers\AuthController::class,'signup']);
+        Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);//done
+        Route::post('signup',[\App\Http\Controllers\AuthController::class,'signup']);//done
         Route::post('logout',[\App\Http\Controllers\AuthController::class,'logout']);
         Route::post('refresh',[\App\Http\Controllers\AuthController::class,'refresh']);
         //-------------------------------- AUTHENTICATE END ------------------------------------
@@ -63,9 +63,10 @@ Route::group(['prefix'=>'v1'], function (){
 
         //------------- For Businessman -------------
 
-        Route::post('vacation/create',[\App\Http\Controllers\VacationController::class,'create']);
-        Route::delete('vacation/delete/{id}',[\App\Http\Controllers\VacationController::class,'delete']);
-        Route::put('vacation/update/{id}',[\App\Http\Controllers\VacationController::class,'update']);
+
+        Route::post('vacation/create',[\App\Http\Controllers\CompanyController::class,'createVacation']);
+        Route::delete('vacation/delete/{id}',[\App\Http\Controllers\CompanyController::class,'deleteVacation']);
+        Route::put('vacation/update/{id}',[\App\Http\Controllers\CompanyController::class,'updateVacation']);
 
         Route::post('interview/offer',[\App\Http\Controllers\InterviewController::class,'offerInterview']);
         Route::delete('interview/delete/{id}',[\App\Http\Controllers\InterviewController::class,'deleteInterview']);

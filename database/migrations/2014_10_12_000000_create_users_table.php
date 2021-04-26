@@ -21,10 +21,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->unique();
-            $table->integer('age');
-            $table->integer('avatar');
-            $table->integer('worker_id');
-            $table->integer('businessman_id');
+            $table->integer('age')->nullable();
+            $table->integer('avatar')->nullable();
+            $table->integer('worker_id')->nullable();
+            $table->integer('company_id')->nullable();
             $table->integer('user_type'); //1 businessman, 2 worker
             $table->rememberToken();
             $table->timestamps();

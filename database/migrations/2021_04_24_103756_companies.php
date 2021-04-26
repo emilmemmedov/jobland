@@ -18,7 +18,7 @@ class Companies extends Migration
             $table->string('company_name');
             $table->string('company_phone');
             $table->string('company_email')->unique();
-            $table->integer('company_icon');
+            $table->integer('company_icon')->nullable();
             $table->timestamps();
         });
     }

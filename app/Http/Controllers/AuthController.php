@@ -8,9 +8,11 @@ use App\Models\Locale;
 use App\Models\User;
 use App\Models\Worker;
 use App\Traits\ApiResource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class AuthController extends Controller
 {
@@ -28,12 +30,24 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token,auth()->user()->user_type);
     }
-    protected function respondWithToken($token): JsonResponse
+    public function logout(): JsonResponse
+    {
+        try{
+            auth()->logout();
+        }
+        catch (RouteNotFoundException $e){
+            return $this->errorResponse('Token is not correct');
+        }
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    protected function respondWithToken($token,$type): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
+            'user_type'=> $type,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
@@ -44,18 +58,7 @@ class AuthController extends Controller
      */
     public function signup(Request $request): JsonResponse
     {
-        if($request->get('user_type') === User::USER_TYPE_WORKER){
-            $this->validate($request,$this->validation($this->NEW_USER_WORKER));
-        }
-        else if ($request->get('user_type') === User::USER_TYPE_BUSINESSMAN){
-            $this->validate($request,$this->validation($this->NEW_USER_BUSINESSMAN));
-        }
-        else if ($request->get('user_type') === User::USER_TYPE_ADMIN) {
-            $this->validate($request,$this->validation($this->NEW_USER_ADMIN));
-        }
-        else {
-            return $this->errorResponse('type field must be  1,2,3');
-        }
+        $this->validate($request,$this->validation($this->NEW_USER));
         if($request->get('user_type') === User::USER_TYPE_WORKER){
             $worker = Worker::query()->create(
                 [
@@ -67,7 +70,7 @@ class AuthController extends Controller
             );
         }
         else if($request->get('user_type') === User::USER_TYPE_BUSINESSMAN){
-            $company = Worker::query()->create(
+            $company = Company::query()->create(
                 [
                     'company_name'=>$request->get('company_name'),
                     'company_phone'=>$request->get('company_phone'),
@@ -84,13 +87,12 @@ class AuthController extends Controller
                 'phone'=>$request->get('phone'),
                 'age'=>$request->get('age'),
                 'user_type'=>$request->get('user_type'),
-                'worker_id'=>$worker->getAttribute('id'),
-                'company_id'=>$company->getAttribute('id')
+                'worker_id'=>isset($worker)?$worker->getAttribute('id'):null,
+                'company_id'=>isset($company)?$company->getAttribute('id'):null
             ]
         );
-        $this->setLocales(new Company(), new CompanyLocale(),$user->getKey(),$request->get('locales'));
-
-    $this->validate($request, $this->validation(User::USER_TYPE_ADMIN));
-
+        if($request->get('user_type') === 1)
+            $this->setLocales(new Company(), new CompanyLocale(),$user->getAttribute('id'),$request->get('locales'));
+        return $this->successResponse('User created successfully');
     }
 }

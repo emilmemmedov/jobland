@@ -16,8 +16,8 @@ class CompanyLocales extends Migration
         Schema::create('company_locales', function (Blueprint $table) {
             $table->id();
             $table->integer('company_id');
-            $table->integer('locale');
-            $table->integer('company_description');
+            $table->string('locale');
+            $table->string('company_description');
             $table->timestamps();
         });
     }

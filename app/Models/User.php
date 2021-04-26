@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    public $USER_TYPE_BUSINESSMAN = 1;
-    public $USER_TYPE_WORKER = 2;
-    public $USER_TYPE_ADMIN = 3;
+    public const USER_TYPE_BUSINESSMAN = 1;
+    public const USER_TYPE_WORKER = 2;
+    public const USER_TYPE_ADMIN = 3;
 
     use HasFactory, Notifiable;
 

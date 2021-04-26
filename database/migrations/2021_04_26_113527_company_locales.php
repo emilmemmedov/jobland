@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Locales extends Migration
+class CompanyLocales extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class Locales extends Migration
      */
     public function up()
     {
-        Schema::create('locales', function (Blueprint $table) {
+        Schema::create('company_locales', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
-            $table->string('locale');
+            $table->integer('company_id');
+            $table->integer('locale');
+            $table->integer('company_description');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class Locales extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locales');
+        Schema::dropIfExists('company_locales');
     }
 }

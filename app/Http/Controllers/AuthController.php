@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\CompanyLocale;
+use App\Models\Locale;
 use App\Models\User;
+use App\Models\Worker;
 use App\Traits\ApiResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -40,19 +44,53 @@ class AuthController extends Controller
      */
     public function signup(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(),$this->Validation($this->NEW_USER));
-        if($validator->fails()){
-            return $this->errorResponse($validator->errors());
+        if($request->get('user_type') === User::USER_TYPE_WORKER){
+            $this->validate($request,$this->validation($this->NEW_USER_WORKER));
         }
-
-        User::create(
+        else if ($request->get('user_type') === User::USER_TYPE_BUSINESSMAN){
+            $this->validate($request,$this->validation($this->NEW_USER_BUSINESSMAN));
+        }
+        else if ($request->get('user_type') === User::USER_TYPE_ADMIN) {
+            $this->validate($request,$this->validation($this->NEW_USER_ADMIN));
+        }
+        else {
+            return $this->errorResponse('type field must be  1,2,3');
+        }
+        if($request->get('user_type') === User::USER_TYPE_WORKER){
+            $worker = Worker::query()->create(
+                [
+                    'min_salary'=>$request->get('min_salary'),
+                    'max_salary'=>$request->get('max_salary'),
+                    'description'=>$request->get('description'),
+                    'category_id'=>$request->get('category_id')
+                ]
+            );
+        }
+        else if($request->get('user_type') === User::USER_TYPE_BUSINESSMAN){
+            $company = Worker::query()->create(
+                [
+                    'company_name'=>$request->get('company_name'),
+                    'company_phone'=>$request->get('company_phone'),
+                    'company_email'=>$request->get('company_email'),
+                ]
+            );
+        }
+        $user = User::query()->create(
             [
                 'name'=>$request->get('name'),
                 'surname'=>$request->get('surname'),
                 'email'=>$request->get('email'),
                 'password'=>bcrypt($request->get('password')),
                 'phone'=>$request->get('phone'),
+                'age'=>$request->get('age'),
+                'user_type'=>$request->get('user_type'),
+                'worker_id'=>$worker->getAttribute('id'),
+                'company_id'=>$company->getAttribute('id')
             ]
         );
+        $this->setLocales(new Company(), new CompanyLocale(),$user->getKey(),$request->get('locales'));
+
+    $this->validate($request, $this->validation(User::USER_TYPE_ADMIN));
+
     }
 }

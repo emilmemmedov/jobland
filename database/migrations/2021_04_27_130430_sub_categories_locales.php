@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SubCategories extends Migration
+class SubCategoriesLocales extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class SubCategories extends Migration
      */
     public function up()
     {
-        Schema::create('sub_categories', function (Blueprint $table) {
+        Schema::create('sub_category_locales', function (Blueprint $table) {
             $table->id();
-            $table->integer('icon')->nullable();
-            $table->integer('position_id');
-            $table->integer('status');
-            $table->integer('category_id');
+            $table->integer('sub_category_id');
+            $table->string('locale');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class SubCategories extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_categories');
+        Schema::dropIfExists('sub_category_locales');
     }
 }

@@ -37,9 +37,9 @@ Route::group(['prefix'=>'v1'], function (){
 
 
         //------------------------------- AUTHENTICATE START ------------------------------------
-        Route::post('login',[\App\Http\Controllers\AuthController::class,'login']);//done
+        Route::post('login',[\App\Http\Controllers\AuthController::class,'login'])->name('login');//done
         Route::post('signup',[\App\Http\Controllers\AuthController::class,'signup']);//done
-        Route::post('logout',[\App\Http\Controllers\AuthController::class,'logout']);
+        Route::post('logout',[\App\Http\Controllers\AuthController::class,'logout']); //done
         Route::post('refresh',[\App\Http\Controllers\AuthController::class,'refresh']);
         //-------------------------------- AUTHENTICATE END ------------------------------------
 
@@ -84,12 +84,11 @@ Route::group(['prefix'=>'v1'], function (){
         Route::post('message/worker',[\App\Http\Controllers\CompanyController::class,'sendMessage']);
     });
 
+//    \Illuminate\Support\Facades\Auth::routes();
 
-    Route::group(['prefix'=>'admin'],function (){
+    Route::group(['prefix'=>'admin','middleware'=>'auth:api'],function (){
         //authenticated admin
-
         Route::post('add/category',[\App\Http\Controllers\AdminController::class,'addCategory']);
         Route::post('add/subCategory',[\App\Http\Controllers\AdminController::class,'addSubCategory']);
-
     });
 });

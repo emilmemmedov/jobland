@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CategoryLocalesModel;
+use App\Models\SubCategory;
+use App\Models\SubCategoryLocalesModel;
 use App\Traits\ApiResource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,11 +21,37 @@ class AdminController extends Controller
     public function addCategory(Request $request){
         $this->authorize('add-category');
 
-        Category::query()->create(
+        $category = Category::query()->create(
             [
                 "status"=>$request->get('status'),
+                "position_id"=>$this->getPositionId(new Category())
             ]
         );
-        $this->setLocales(new Category(), new CategoryLocalesModel());
+        if($request->get('sub_categories')){
+            foreach ($request->get('sub_categories') as $sub){
+                $subCategory = SubCategory::query()->create(
+                    [
+                        "status"=>$sub['status'],
+                        "position_id"=>$this->getPositionId(new SubCategory()),
+                        "category_id"=>$category->getAttribute('id')
+                    ]
+                );
+                $this->setLocales(new SubCategory(), new SubCategoryLocalesModel(),$subCategory->getAttribute('id'),$sub['locales']);
+            }
+        }
+        $this->setLocales(new Category(), new CategoryLocalesModel(),$category->getAttribute('id'),$request->get('locales'));
+        return $this->successResponse('Category created successfully');
+    }
+    public function setLocales(Model $parentModel, Model $localeModel, $id, $locales){
+        $localeModel->where($parentModel->getForeignKey(),$id)->delete();
+        $data = [];
+        foreach ($locales as $locale) {
+            $data[] = [
+                $parentModel->getForeignKey() => $id,
+                'locale'=>$locale['locale'],
+                'name'=> $locale['name'] ?? null
+            ];
+        }
+        $localeModel->insert($data);
     }
 }

@@ -28,7 +28,8 @@ class Vacation extends Model
 
     public function subCategories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Sub_Category::clas,'vacation_sub_category','vacation_id','sub_category_id');
+        return $this->belongsToMany(SubCategory::clas,'vacation_sub_category','vacation_id','sub_category_id');
+
     }
 
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany

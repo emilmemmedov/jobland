@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryLocalesModel extends Model
 {
-    protected $table = "categories";
+    protected $table = "category_locales";
     protected $guarded = [];
     use HasFactory;
 }

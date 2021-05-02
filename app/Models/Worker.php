@@ -26,7 +26,7 @@ class Worker extends Model
 
     public function subCategories(): BelongsToMany
     {
-        return $this->belongsToMany(Sub_Category::class,'worker_sub_category','worker_id','sub_category_id');
+        return $this->belongsToMany(SubCategory::class,'worker_sub_category','worker_id','sub_category_id');
     }
 
     public function vipVacations(): BelongsToMany

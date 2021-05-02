@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 trait ApiResource
 {
-    use Validation, Locales;
+    use Validation, Positions;
 
     public function dataResponse($data): JsonResponse
     {

@@ -18,7 +18,7 @@ class Category extends Model
 
     public function subCategories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Sub_Category::class,'category_id','id');
+        return $this->hasMany(SubCategory::class,'category_id','id');
     }
 
     public function vacations(): \Illuminate\Database\Eloquent\Relations\HasMany

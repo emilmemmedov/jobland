@@ -12,7 +12,7 @@ class Worker extends Model
 {
     use HasFactory;
     protected $table = "workers";
-    protected $guarded = [];
+    protected $guarded = ['total_rating'];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

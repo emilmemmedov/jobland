@@ -9,7 +9,6 @@ class Interview extends Model
 {
     protected $table = "interviews";
     protected $guarded = [];
-
     use HasFactory;
 
     public function worker(): \Illuminate\Database\Eloquent\Relations\BelongsTo

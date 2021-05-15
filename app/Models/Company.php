@@ -32,15 +32,11 @@ class Company extends Model
             ->where('company_delete','=','0');
     }
 
-    public function applied_worker(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(VacationApply::class,'company_id','id')
-            ->where('company_delete','=','0');
-    }
     public function workers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Working::class,'company_id','id');
     }
+
     public function locales(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CompanyLocale::class,'company_id','id');

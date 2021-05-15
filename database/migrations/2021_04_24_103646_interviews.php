@@ -15,15 +15,21 @@ class Interviews extends Migration
     {
         Schema::create('interviews', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('description');
+            $table->string('language');
+            $table->timestamp('scheduled');
             $table->integer('company_id');
             $table->integer('worker_id');
-            $table->integer('status'); //0-offer, 1-interviewed, 2-accept, 3-reject
-            $table->integer('type'); //1-questions, 2-video
-//            $table->timestamp('scheduled');
-//            $table->integer('worker_delete');
-//            $table->integer('company_delete');
-//            $table->integer('reject_offer_by'); //1 businessman, 2 worker
-//            $table->string('reject_reason');
+            $table->string('vacation_id');
+            $table->integer('status_id');
+            /*
+                1 - created by company
+                2 - accepted by worker
+                3 - rejected by worker
+                4 - canceled by company
+             */
+            $table->string('reject_reason');
             $table->timestamps();
         });
     }

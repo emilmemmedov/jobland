@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class QuestionVariants extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('question_variants', function (Blueprint $table) {
+            $table->id();
+            $table->integer('question_id');
+            $table->integer('position');
+            $table->string('variant');
+            $table->integer('satisfied'); //1-yes, 0-no
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('question_variants');
+    }
+}

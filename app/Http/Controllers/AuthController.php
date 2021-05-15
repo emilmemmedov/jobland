@@ -6,7 +6,9 @@ use App\Models\Company;
 use App\Models\CompanyLocale;
 use App\Models\Locale;
 use App\Models\User;
+use App\Models\VacationSubCategory;
 use App\Models\Worker;
+use App\Models\WorkerSubCategory;
 use App\Traits\ApiResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -72,11 +74,21 @@ class AuthController extends Controller
                     'category_id'=>$request->get('category_id')
                 ]
             );
+            if(is_array($request->get('sub_categories')) && count($request->get('sub_categories')))
+            {
+                foreach ($request->get('sub_categories') as $subcategory){
+                    WorkerSubCategory::query()->create([
+                        'worker_id' => $worker->getAttribute('id'),
+                        'sub_category_id' => $subcategory['sub_category_id']
+                    ]);
+                }
+            }
         }
         else if($request->get('user_type') === User::USER_TYPE_BUSINESSMAN){
             $company = Company::query()->create(
                 [
                     'company_name'=>$request->get('company_name'),
+                    'company_description'=>$request->get('company_description'),
                     'company_phone'=>$request->get('company_phone'),
                     'company_email'=>$request->get('company_email'),
                 ]

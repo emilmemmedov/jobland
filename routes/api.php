@@ -36,13 +36,15 @@ Route::group(['prefix'=>'v1'], function (){
         Route::get('vacation/{id}',[VacationController::class,'show']); //done
         Route::get('vacation/{id}/comment',[VacationController::class,'showComments']); //done
         Route::get('vacation/category/{id}',[VacationController::class,'vacationByCategoryId']);//done
-        Route::get('vacation/subcategory/{id}',[VacationController::class,'vacationBySubCategoryId']);
+        Route::get('vacation/subcategory/{id}',[VacationController::class,'vacationBySubCategoryId']); //done
 
-        Route::get('company',[CompanyController::class,'index']);
-        Route::get('company/{id}',[CompanyController::class,'show']);
+        Route::get('company',[CompanyController::class,'index']); //done
+        Route::get('company/{id}',[CompanyController::class,'show']); //done
 
-        Route::get('worker',[WorkerController::class,'index']);
-        Route::get('worker/{id}',[WorkerController::class,'show']);
+        Route::get('worker',[WorkerController::class,'index']); //done
+        Route::get('worker/{id}',[WorkerController::class,'show']);//done
+        Route::get('worker/category/{id}',[WorkerController::class,'workerByCategoryId']); //done
+        Route::get('worker/subcategory/{id}',[WorkerController::class,'workerBySubCategoryId']);//done
 
 
         //------------------------------- AUTHENTICATE START ------------------------------------

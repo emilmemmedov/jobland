@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\SubCategory;
 use App\Models\Vacation;
+use App\Models\VacationSubCategory;
 use App\Traits\ApiResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,14 @@ class VacationController extends Controller
     public function index(Request $request): JsonResponse
     {
         $data = Vacation::query()
+            ->select([
+                'id',
+                'category_id',
+                'company_id',
+                'name',
+                'description',
+                'salary',
+            ])
             ->with([
                 'company',
                 'subCategories' => function($query){
@@ -98,20 +107,64 @@ class VacationController extends Controller
         return $this->dataResponse($data);
     }
 
-    public function vacationByCategoryId($id): JsonResponse
+    public function vacationByCategoryId(Request $request, $id): JsonResponse
     {
         $data = Category::query()
             ->findOrFail($id)
-            ->vacations()
-            ->simplePaginate(2);
+            ->with([
+                'vacations' => function($query){
+                    $query
+                        ->select([
+                            'id',
+                            'category_id',
+                            'company_id',
+                            'name',
+                            'description',
+                            'salary',
+                        ])
+                        ->with([
+                        'lastComment' => function($query){
+                            $query->with([
+                                'user' => function($query){
+                                    $query->select([
+                                        'id',
+                                        'name',
+                                        'surname',
+                                        'email',
+                                    ]);
+                                }
+                            ]);
+                        }
+                    ]);
+                }
+            ])
+            ->simplePaginate($request->get('per_page','15'));
         return $this->dataResponse($data);
     }
 
-    public function vacationBySubCategoryId($id){
-        $data = SubCategory::query()
-            ->findOrFail($id)
-            ->vacations()
-            ->simplePaginate(2);
+    public function vacationBySubCategoryId(Request $request, $id): JsonResponse
+    {
+        $data = VacationSubCategory::query()
+            ->where('sub_category_id', $id)
+            ->with([
+                'vacations' => function($query){
+                    $query->with([
+                        'lastComment' => function($query){
+                            $query->with([
+                                'user' => function($query){
+                                    $query->select([
+                                        'id',
+                                        'name',
+                                        'surname',
+                                        'email',
+                                    ]);
+                                }
+                            ]);
+                        }
+                    ]);
+                }
+            ])
+            ->simplePaginate($request->get('per_page','15'));
         return $this->dataResponse($data);
     }
 }

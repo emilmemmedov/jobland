@@ -12,4 +12,8 @@ class VacationSubCategory extends Model
     protected $table = "vacation_sub_category";
     protected $guarded = ['created_at', 'updated_at'];
 
+    public function vacations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Vacation::class,'id','vacation_id');
+    }
 }

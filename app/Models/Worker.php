@@ -14,9 +14,9 @@ class Worker extends Model
     protected $table = "workers";
     protected $guarded = [];
 
-    public function user(): BelongsTo
+    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->belongsTo(User::class,'worker_id','id');
+        return $this->hasOne(User::class,'worker_id','id');
     }
 
     public function category(): BelongsTo

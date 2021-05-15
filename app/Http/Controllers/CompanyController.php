@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Vacation;
 use App\Models\VacationSubCategory;
 use App\Traits\ApiResource;
@@ -15,6 +16,40 @@ class CompanyController extends Controller
 {
     use ApiResource;
 
+    public function index(Request $request): JsonResponse
+    {
+        $data = Company::query()
+            ->select([
+                'id',
+                'company_name',
+                'company_email',
+                'company_icon'
+            ])
+            ->with('locales')
+            ->simplePaginate($request->get('per_page','15'));
+        return $this->dataResponse($data);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $data = Company::query()
+            ->findOrFail($id)
+            ->with([
+                'locales',
+                'user' => function($query){
+                    $query->select([
+                        'id',
+                        'name',
+                        'surname',
+                        'email',
+                        'company_id',
+                        'phone'
+                    ]);
+                }
+            ])
+            ->get();
+        return $this->dataResponse($data);
+    }
     /**
      * @throws AuthorizationException
      * @throws \Illuminate\Validation\ValidationException

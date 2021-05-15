@@ -27,7 +27,9 @@ trait Validation
                     'company_name'=>'required_if:user_type,1',
                     'company_phone'=>'required_if:user_type,1',
                     'company_email'=>'required_if:user_type,1|unique:companies',
-                    'locales'=>'required_if:user_type,1'
+                    'company_description'=>'required_if:user_type,1|unique:companies',
+                    'locales'=>'required_if:user_type,1',
+                    'sub_categories.*.sub_category_id'=>'required_if:user_type,2|exists:sub_categories,id'
                 ];
             case $this->NEW_CATEGORY:
                 return [

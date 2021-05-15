@@ -16,6 +16,7 @@ class Companies extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('company_name');
+            $table->string('company_description');
             $table->string('company_phone');
             $table->string('company_email')->unique();
             $table->integer('company_icon')->nullable();

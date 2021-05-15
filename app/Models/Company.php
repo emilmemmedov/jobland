@@ -13,17 +13,12 @@ class Company extends Model
     protected $hidden = ['created_at','updated_at'];
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class,'company_id','id');
+        return $this->belongsTo(User::class,'id','company_id');
     }
 
     public function icon(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(File_Service::class,'id','company_icon');
-    }
-
-    public function description(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(Locale::class,'id','company_description');
     }
 
     public function vacations(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -45,5 +40,9 @@ class Company extends Model
     public function workers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Working::class,'company_id','id');
+    }
+    public function locales(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CompanyLocale::class,'company_id','id');
     }
 }

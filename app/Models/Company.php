@@ -10,6 +10,7 @@ class Company extends Model
     use HasFactory;
     protected $table = "companies";
     protected $guarded = [];
+    protected $hidden = ['created_at','updated_at'];
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class,'company_id','id');

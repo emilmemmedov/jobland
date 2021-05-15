@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vacation extends Model
 {
-    use HasFactory;
     protected $table = "vacations";
+    protected $hidden = ['created_at','updated_at'];
     protected $guarded = [];
 
     public function company(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Company::class,'id','company_id');
+        return $this->belongsTo(Company::class,'company_id','id');
     }
 
     public function icon(): \Illuminate\Database\Eloquent\Relations\HasOne
@@ -28,12 +28,16 @@ class Vacation extends Model
 
     public function subCategories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(SubCategory::clas,'vacation_sub_category','vacation_id','sub_category_id');
+        return $this->belongsToMany(SubCategory::class,'vacation_sub_category','vacation_id','sub_category_id');
 
     }
 
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Comment::class,'vacation_id','id');
+    }
+    public function lastComment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Comment::class,'vacation_id','id')->latest();
     }
 }

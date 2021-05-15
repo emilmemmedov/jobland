@@ -10,6 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 trait Positions
 {
     public function getPositionId(Model $model){
-        return Category::query()->max('position_id') + 1;
+        return $model::query()->max('position_id') + 1;
     }
 }

@@ -7,6 +7,11 @@ namespace App\Traits;
 trait Validation
 {
     public $NEW_USER = 1;
+    public $NEW_CATEGORY = 2;
+    public $NEW_SUB_CATEGORY = 3;
+    public $NEW_VACATION = 4;
+    public $NEW_COMMENT = 5;
+
     public function validation($validated): array
     {
         switch ($validated){
@@ -23,6 +28,34 @@ trait Validation
                     'company_phone'=>'required_if:user_type,1',
                     'company_email'=>'required_if:user_type,1|unique:companies',
                     'locales'=>'required_if:user_type,1'
+                ];
+            case $this->NEW_CATEGORY:
+                return [
+                    'locales'=>'required',
+                    'status'=>'required',
+                    'sub_categories.*.locales'=>'required',
+                    'sub_categories.*.status'=>'required',
+                ];
+            case $this->NEW_SUB_CATEGORY:
+                return [
+                    'category_id'=>'required',
+                    'locales'=>'required',
+                    'status'=>'required',
+                ];
+            case $this->NEW_VACATION:
+                return [
+                    'name'=>'required',
+                    'description'=>'required',
+                    'category_id'=>'required|exists:categories,id',
+                    'salary'=>'integer',
+                    'min_age'=>'integer',
+                    'max_age'=>'integer',
+                    'sub_categories.*.sub_category_id'=>'required|exists:sub_categories,id'
+                ];
+            case $this->NEW_COMMENT:
+                return [
+                    'vacation_id'=>'required|exists:vacations,id',
+                    'content'=>'required'
                 ];
         }
     }

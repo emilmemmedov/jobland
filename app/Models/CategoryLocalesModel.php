@@ -9,5 +9,6 @@ class CategoryLocalesModel extends Model
 {
     protected $table = "category_locales";
     protected $guarded = [];
+    protected $hidden = ['created_at','updated_at'];
     use HasFactory;
 }

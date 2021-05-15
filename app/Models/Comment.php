@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $table = "comments";
-    protected $guarded = [];
+    protected $guarded = ['updated_at'];
     use HasFactory;
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
@@ -16,4 +16,8 @@ class Comment extends Model
         return $this->hasOne(User::class,'id','user_id');
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d:m H:i',strtotime($value));
+    }
 }

@@ -2,9 +2,116 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\SubCategory;
+use App\Models\Vacation;
+use App\Traits\ApiResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use function Sodium\add;
 
 class VacationController extends Controller
 {
-    //
+    use ApiResource;
+    public function index(Request $request): JsonResponse
+    {
+        $data = Vacation::query()
+            ->with([
+                'company',
+                'subCategories' => function($query){
+                    $query->with([
+                       'locales'
+                    ]);
+                },
+                'lastComment' => function($query){
+                    $query->with([
+                        'user' => function($query){
+                            $query->select([
+                                'id',
+                                'name',
+                                'surname',
+                                'email',
+                            ]);
+                        }
+                    ]);
+                }
+            ])
+            ->simplePaginate($request->get('per_page','15'));
+        return $this->dataResponse($data);
+    }
+    public function show($id): JsonResponse
+    {
+        $data = Vacation::query()
+            ->where('id',$id)
+            ->with([
+                'company',
+                'lastComment' => function($query){
+                    $query->with([
+                        'user' => function($query){
+                            $query->select([
+                                'id',
+                                'name',
+                                'surname',
+                                'email',
+                            ]);
+                        }
+                    ]);
+                }
+            ])
+            ->get();
+        return $this->dataResponse($data);
+    }
+
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function addComment(Request $request): JsonResponse
+    {
+        $this->validate($request, $this->validation($this->NEW_COMMENT));
+        Comment::query()->create(
+            [
+                "comment_content"=>$request->get('content'),
+                "user_id"=>auth()->id(),
+                "vacation_id"=>$request->get('vacation_id')
+            ]
+        );
+        return $this->successResponse('Comment Added Successfully');
+    }
+
+    public function showComments(Request $request, $id): JsonResponse
+    {
+        $data = Comment::query()
+            ->where('vacation_id',$id)
+            ->with([
+                'user' => function($query){
+                    $query->select([
+                        'id',
+                        'name',
+                        'surname',
+                        'email',
+                    ]);
+                }
+            ])
+            ->simplePaginate($request->get('per_page',15));
+        return $this->dataResponse($data);
+    }
+
+    public function vacationByCategoryId($id): JsonResponse
+    {
+        $data = Category::query()
+            ->findOrFail($id)
+            ->vacations()
+            ->simplePaginate(2);
+        return $this->dataResponse($data);
+    }
+
+    public function vacationBySubCategoryId($id){
+        $data = SubCategory::query()
+            ->findOrFail($id)
+            ->vacations()
+            ->simplePaginate(2);
+        return $this->dataResponse($data);
+    }
 }

@@ -43,6 +43,10 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+    public function refresh(): JsonResponse
+    {
+        return $this->respondWithToken(auth()->refresh(),auth()->user()->user_type);
+    }
     protected function respondWithToken($token,$type): JsonResponse
     {
         return response()->json([

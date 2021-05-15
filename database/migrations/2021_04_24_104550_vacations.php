@@ -17,11 +17,11 @@ class Vacations extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->integer('salary');
-            $table->integer('min_age');
-            $table->integer('max_age');
+            $table->integer('salary')->nullable();
+            $table->integer('min_age')->nullable();
+            $table->integer('max_age')->nullable();
             $table->timestamp('expire_time');
-            $table->integer('icon');
+            $table->integer('icon')->nullable();
             $table->integer('category_id');
             $table->integer('company_id');
             $table->timestamps();

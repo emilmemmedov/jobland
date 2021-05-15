@@ -9,6 +9,7 @@ class SubCategory extends Model
 {
     protected $table = "sub_categories";
     protected $guarded = [];
+    protected $hidden = ['created_at','updated_at'];
     use HasFactory;
 
     public function workers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -19,6 +20,11 @@ class SubCategory extends Model
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class,'id','category_id');
+    }
+
+    public function locales(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SubCategoryLocalesModel::class,'sub_category_id','id');
     }
 
     public function vacations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

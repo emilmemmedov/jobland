@@ -20,7 +20,7 @@ class AdminController extends Controller
      */
     public function addCategory(Request $request){
         $this->authorize('add-category');
-
+        $this->validate($request,$this->validation($this->NEW_CATEGORY));
         $category = Category::query()->create(
             [
                 "status"=>$request->get('status'),
@@ -42,6 +42,32 @@ class AdminController extends Controller
         $this->setLocales(new Category(), new CategoryLocalesModel(),$category->getAttribute('id'),$request->get('locales'));
         return $this->successResponse('Category created successfully');
     }
+
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function addSubCategory(Request $request){
+        $this->authorize('add-category');
+        $this->validate($request,$this->validation($this->NEW_SUB_CATEGORY));
+
+        if($request->get('category_id')){
+            foreach ($request->get('sub_categories') as $sub){
+                $subCategory = SubCategory::query()->create(
+                    [
+                        "status"=>$sub['status'],
+                        "position_id"=>$this->getPositionId(new SubCategory()),
+                        "category_id"=>$request->get('category_id')
+                    ]
+                );
+                $this->setLocales(new SubCategory(), new SubCategoryLocalesModel(),$subCategory->getAttribute('id'),$sub['locales']);
+            }
+        }
+        else{
+            $this->errorResponse("Category field is required");
+        }
+        return $this->successResponse('Sub Category created successfully');
+    }
+
     public function setLocales(Model $parentModel, Model $localeModel, $id, $locales){
         $localeModel->where($parentModel->getForeignKey(),$id)->delete();
         $data = [];

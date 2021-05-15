@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
@@ -60,12 +61,6 @@ Route::group(['prefix'=>'v1'], function (){
             Route::put('user/update',[UserController::class,'update']); // both worker and businessman and admin
 
             Route::post('interview/accept',[InterviewController::class,'acceptInterview']);
-            Route::post('interview/reject',[InterviewController::class,'acceptReject']);
-            Route::delete('interview/delete/{id}',[InterviewController::class,'deleteInterview']);
-            Route::post('resign/company/{id}',[WorkerController::class,'resignCompany']);
-
-            Route::post('vacation/worker/apply',[VacationApplyController::class,'applyVacation']);
-            Route::delete('vacation/worker/delete/{id}',[VacationApplyController::class,'deleteApplyVacation']);
 
             Route::get('vacation/for/worker',[WorkerController::class,'specialVacations']);
 
@@ -75,21 +70,20 @@ Route::group(['prefix'=>'v1'], function (){
             Route::post('message/company',[WorkerController::class,'sendMessage']);
 
             //------------- For Businessman -------------
-
+            Route::post('assignment', [AssignmentController::class,'create']);
+            Route::get('assignment/{id}', [AssignmentController::class,'show']);
+            Route::get('assignment', [AssignmentController::class,'index']);
+            Route::put('assignment', [AssignmentController::class,'update']);
 
             Route::post('vacation/create',[CompanyController::class,'createVacation']); //done
             Route::delete('vacation/delete/{id}',[CompanyController::class,'deleteVacation']); //done
             Route::put('vacation/update/{id}',[CompanyController::class,'updateVacation']); //done
 
-            Route::post('interview/offer',[InterviewController::class,'offerInterview']);
-            Route::delete('interview/delete/{id}',[InterviewController::class,'deleteInterview']);
-            Route::post('accept/worker',[CompanyController::class,'acceptWorker']);
-            Route::post('reject/worker',[CompanyController::class,'rejectWorker']);
-            Route::post('resign/worker/{id}',[CompanyController::class,'resignWorker']);
-
-            Route::post('vacation/worker/accept',[VacationApplyController::class,'acceptVacation']);
-            Route::post('vacation/worker/reject',[VacationApplyController::class,'rejectVacation']);
-            Route::delete('vacation/worker/delete/{id}',[VacationApplyController::class,'deleteApplyVacation']);
+            Route::get('interview',[InterviewController::class, 'index']);
+            Route::get('interview/{id}',[InterviewController::class,'show']);
+            Route::put('interview/{id}', [InterviewController::class, 'update']);
+            Route::post('interview/offer', [InterviewController::class,'offerInterview']);
+            Route::post('interview/reject', [InterviewController::class,'rejectInterview']);
 
             Route::get('worker/for/vacation/{id}',[CompanyController::class,'specialWorker']);
 

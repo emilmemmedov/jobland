@@ -28,8 +28,11 @@ class Interviews extends Migration
                 2 - accepted by worker
                 3 - rejected by worker
                 4 - canceled by company
+                5 - accept worker for vacation
+                6 - reject worker for vacation
              */
-            $table->string('reject_reason');
+            $table->string('reject_vacation_reason');
+            $table->string('reject_worker_reason');
             $table->timestamps();
         });
     }

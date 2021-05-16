@@ -73,7 +73,7 @@ Route::group(['prefix'=>'v1'], function (){
             Route::post('assignment', [AssignmentController::class,'create']);
             Route::get('assignment/{id}', [AssignmentController::class,'show']);
             Route::get('assignment', [AssignmentController::class,'index']);
-            Route::put('assignment', [AssignmentController::class,'update']);
+            Route::put('assignment/{id}', [AssignmentController::class,'update']);
 
             Route::post('vacation/create',[CompanyController::class,'createVacation']); //done
             Route::delete('vacation/delete/{id}',[CompanyController::class,'deleteVacation']); //done

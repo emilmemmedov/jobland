@@ -11,7 +11,7 @@ trait Validation
     public $NEW_SUB_CATEGORY = 3;
     public $NEW_VACATION = 4;
     public $NEW_COMMENT = 5;
-
+    public $NEW_ASSIGNMENT = 6;
     public function validation($validated): array
     {
         switch ($validated){
@@ -58,6 +58,17 @@ trait Validation
                 return [
                     'vacation_id'=>'required|exists:vacations,id',
                     'content'=>'required'
+                ];
+            case $this->NEW_ASSIGNMENT:
+                return [
+                    'title' => 'required',
+                    'description' => 'required',
+                    'questions' => 'required',
+                    'questions.*.status' => 'required|boolean',
+                    'questions.*.question' => 'required',
+                    'questions.*.variants' => 'required',
+                    'questions.*.variants.*.satisfied' => 'required|boolean',
+                    'questions.*.variants.*.variant' => 'required',
                 ];
         }
     }

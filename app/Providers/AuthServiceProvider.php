@@ -43,5 +43,14 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
         });
+
+        Gate::define('create-assignment',function (User $user){
+            if($user->getAttribute('user_type') === User::USER_TYPE_BUSINESSMAN){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
     }
 }

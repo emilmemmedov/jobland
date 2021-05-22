@@ -68,7 +68,8 @@ class CompanyController extends Controller
                 "max_age"=>$request->get('max_age'),
                 "expire_time"=> Carbon::now()->addDays(30),
                 "category_id"=>$request->get('category_id'),
-                "company_id"=>auth()->id()
+                "company_id"=>auth()->id(),
+                'assignment_id'=>$request->get('assignment_id')
             ]
         );
         if(is_array($request->get('sub_categories')) && count($request->get('sub_categories')))
@@ -100,7 +101,7 @@ class CompanyController extends Controller
     public function updateVacation(Request $request,$id): JsonResponse
     {
         $this->authorize('create-vacation');
-        Vacation::query()->find($id)->update($request->only([
+        Vacation::query()->findOrFail($id)->update($request->only([
             'name',
             'description',
             'salary',

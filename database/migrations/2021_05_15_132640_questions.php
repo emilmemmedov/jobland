@@ -17,7 +17,7 @@ class Questions extends Migration
             $table->id();
             $table->integer('assignment_id');
             $table->integer('position');
-            $table->string('status'); //1-shown, 0 - un shown
+            $table->integer('status'); //1-shown, 0 - un shown
             $table->string('question');
             $table->timestamps();
         });

@@ -60,7 +60,8 @@ Route::group(['prefix'=>'v1'], function (){
             Route::get('user',[UserController::class,'index']); // both worker and businessman and admin
             Route::put('user/update',[UserController::class,'update']); // both worker and businessman and admin
 
-            Route::post('interview/accept',[InterviewController::class,'acceptInterview']);
+            Route::post('interview/accept', [InterviewController::class,'acceptInterview']);
+            Route::post('vacation/apply', [AssignmentController::class,'applyVacation']);
 
             Route::get('vacation/for/worker',[WorkerController::class,'specialVacations']);
 
@@ -70,10 +71,11 @@ Route::group(['prefix'=>'v1'], function (){
             Route::post('message/company',[WorkerController::class,'sendMessage']);
 
             //------------- For Businessman -------------
-            Route::post('assignment', [AssignmentController::class,'create']);
-            Route::get('assignment/{id}', [AssignmentController::class,'show']);
-            Route::get('assignment', [AssignmentController::class,'index']);
-            Route::put('assignment/{id}', [AssignmentController::class,'update']);
+            Route::post('assignment', [AssignmentController::class,'create']); //done
+            Route::put('assignment', [AssignmentController::class,'update']); //done
+            Route::get('assignment', [AssignmentController::class,'index']);//done
+            Route::get('assignment/{id}', [AssignmentController::class,'show']);//done
+            Route::put('assignment/{assignment_id}/question/{question_id}',[AssignmentController::class,'updateQuestion']);//done
 
             Route::post('vacation/create',[CompanyController::class,'createVacation']); //done
             Route::delete('vacation/delete/{id}',[CompanyController::class,'deleteVacation']); //done

@@ -7,9 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Interview extends Model
 {
+    use HasFactory;
+
     protected $table = "interviews";
     protected $guarded = [];
-    use HasFactory;
+
+    public const CREATED = 1;
+    public const ACCEPTED = 2;
+    public const REJECTED = 3;
+    public const CANCELED = 4;
+    public const ACCEPT_WORKER = 5;
+    public const REJECT_WORKER = 6;
 
     public function worker(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

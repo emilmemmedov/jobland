@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentEvent;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\SubCategory;
@@ -67,7 +68,8 @@ class VacationController extends Controller
                             ]);
                         }
                     ]);
-                }
+                },
+                'assignment'
             ])
             ->get();
         return $this->dataResponse($data);
@@ -79,13 +81,14 @@ class VacationController extends Controller
     public function addComment(Request $request): JsonResponse
     {
         $this->validate($request, $this->validation($this->NEW_COMMENT));
-        Comment::query()->create(
+        $comment = Comment::query()->create(
             [
                 "comment_content"=>$request->get('content'),
                 "user_id"=>auth()->id(),
                 "vacation_id"=>$request->get('vacation_id')
             ]
         );
+        CommentEvent::dispatch($comment);
         return $this->successResponse('Comment Added Successfully');
     }
 

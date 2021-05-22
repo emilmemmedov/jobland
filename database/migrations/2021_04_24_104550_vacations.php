@@ -24,7 +24,7 @@ class Vacations extends Migration
             $table->integer('icon')->nullable();
             $table->integer('category_id');
             $table->integer('company_id');
-            $table->integer('assignment_id');
+            $table->integer('assignment_id')->nullable();
             $table->timestamps();
         });
     }

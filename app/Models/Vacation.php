@@ -40,4 +40,8 @@ class Vacation extends Model
     {
         return $this->hasOne(Comment::class,'vacation_id','id')->latest();
     }
+    public function assignment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Assignment::class,'id','assignment_id');
+    }
 }

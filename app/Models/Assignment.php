@@ -11,5 +11,6 @@ class Assignment extends Model
     protected $table = "assignments";
     protected $guarded = [];
     protected $hidden = ['created_at','updated_at'];
+
 }
 

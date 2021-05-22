@@ -12,6 +12,8 @@ trait Validation
     public $NEW_VACATION = 4;
     public $NEW_COMMENT = 5;
     public $NEW_ASSIGNMENT = 6;
+    public $NEW_QUESTION = 7;
+    public $VALIDATION_OFFER = 8;
     public function validation($validated): array
     {
         switch ($validated){
@@ -27,7 +29,7 @@ trait Validation
                     'company_name'=>'required_if:user_type,1',
                     'company_phone'=>'required_if:user_type,1',
                     'company_email'=>'required_if:user_type,1|unique:companies',
-                    'company_description'=>'required_if:user_type,1|unique:companies',
+                    'company_description'=>'required_if:user_type,1',
                     'locales'=>'required_if:user_type,1',
                     'sub_categories.*.sub_category_id'=>'required_if:user_type,2|exists:sub_categories,id'
                 ];
@@ -69,6 +71,24 @@ trait Validation
                     'questions.*.variants' => 'required',
                     'questions.*.variants.*.satisfied' => 'required|boolean',
                     'questions.*.variants.*.variant' => 'required',
+                ];
+            case $this->NEW_QUESTION:
+                return [
+                    'questions' => 'required',
+                    'questions.*.status' => 'required|boolean',
+                    'questions.*.question' => 'required',
+                    'questions.*.variants' => 'required',
+                    'questions.*.variants.*.satisfied' => 'required|boolean',
+                    'questions.*.variants.*.variant' => 'required',
+                ];
+            case $this->VALIDATION_OFFER:
+                return [
+                    'title' => 'required',
+                    'description' => 'required',
+                    'language'=>'required',
+                    'scheduled' => 'required',
+                    'vacation_id'=> 'required|exists:vacations,id',
+                    'worker_id'=>'required|exists:workers,id'
                 ];
         }
     }

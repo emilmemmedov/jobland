@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\AssignmentResult;
 use App\Models\Question;
+use App\Models\Vacation;
 use App\Models\Variant;
 use App\Traits\ApiResource;
 use Illuminate\Database\Eloquent\Model;
@@ -96,6 +98,37 @@ class AssignmentController extends Controller
             return $this->successResponse('Question added successfully');
         }
         return $this->errorResponse('Your unauthenticated for this action');
+    }
+
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function applyVacation(Request $request): JsonResponse
+    {
+        $this->authorize('apply-vacation');
+        $this->validate($request,$this->validation($this->APPLY_VACATION));
+        if(AssignmentResult::query()->where('worker_id', Auth::user()->worker()->get()[0]['id'])->value('assignment_id') !== $request->get('assignment_id')){
+            if(Vacation::query()->findOrFail($request->get('vacation_id'))->getAttribute('assignment_id') === $request->get('assignment_id')){
+                AssignmentResult::query()->create([
+                    'assignment_id'=>$request->get('assignment_id'),
+                    'worker_id' => Auth::user()->worker()->value('id'),
+                ]);
+                return $this->successResponse('applied successfully');
+            }
+            else{
+                return $this->errorResponse('Your vacation id not related to vacation id');
+            }
+        }
+        return $this->errorResponse('This assignment applied already');
+    }
+
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function getQuestion(Request $request, $id){
+        $this->authorize('apply-vacation');
+        dd(AssignmentResult::query()->where('worker_id',Auth::user())->value('assignment_id'));
     }
     public function setQuestion($questions, $id){
         foreach ($questions as $question){

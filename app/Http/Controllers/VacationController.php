@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Events\CommentEvent;
+use App\Models\AssignmentResult;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\SubCategory;
+use App\Models\User;
 use App\Models\Vacation;
 use App\Models\VacationSubCategory;
 use App\Traits\ApiResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function Sodium\add;
 
@@ -57,6 +60,7 @@ class VacationController extends Controller
             ->where('id',$id)
             ->with([
                 'company',
+                'assignment',
                 'lastComment' => function($query){
                     $query->with([
                         'user' => function($query){
@@ -69,9 +73,18 @@ class VacationController extends Controller
                         }
                     ]);
                 },
-                'assignment'
-            ])
-            ->get();
+            ])->get();
+        if(\auth()->user() !== null && \auth()->user()->user_type === User::USER_TYPE_WORKER){
+            if(AssignmentResult::query()
+                ->where('worker_id', Auth::user()->worker()->value('id'))
+                ->value('assignment_id') === $data[0]->assignment_id)
+                {
+                    $data[0]['applied'] = true;
+                }
+            else{
+                $data[0]['applied'] = false;
+            }
+        }
         return $this->dataResponse($data);
     }
 

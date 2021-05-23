@@ -17,6 +17,11 @@ class AssignmentResults extends Migration
             $table->id();
             $table->integer('assignment_id');
             $table->integer('worker_id');
+            $table->integer('status');
+            /*
+             * 1 - active
+             * 0 - close
+            */
             $table->timestamps();
         });
     }

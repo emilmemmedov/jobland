@@ -14,6 +14,8 @@ trait Validation
     public $NEW_ASSIGNMENT = 6;
     public $NEW_QUESTION = 7;
     public $VALIDATION_OFFER = 8;
+    public $APPLY_VACATION = 9;
+
     public function validation($validated): array
     {
         switch ($validated){
@@ -54,7 +56,8 @@ trait Validation
                     'salary'=>'integer',
                     'min_age'=>'integer',
                     'max_age'=>'integer',
-                    'sub_categories.*.sub_category_id'=>'required|exists:sub_categories,id'
+                    'sub_categories.*.sub_category_id'=>'required|exists:sub_categories,id',
+                    'assignment_id'=>'exists:assignments,id'
                 ];
             case $this->NEW_COMMENT:
                 return [
@@ -89,6 +92,11 @@ trait Validation
                     'scheduled' => 'required',
                     'vacation_id'=> 'required|exists:vacations,id',
                     'worker_id'=>'required|exists:workers,id'
+                ];
+            case $this->APPLY_VACATION:
+                return [
+                    'vacation_id'=>'required|exists:vacations,id',
+                    'assignment_id'=>'required|exists:assignments,id'
                 ];
         }
     }

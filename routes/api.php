@@ -61,10 +61,12 @@ Route::group(['prefix'=>'v1'], function (){
             Route::put('user/update',[UserController::class,'update']); // both worker and businessman and admin
 
             Route::post('interview/accept', [InterviewController::class,'acceptInterview']);
-            Route::post('vacation/apply', [AssignmentController::class,'applyVacation']);
+
+            Route::post('vacation/apply', [AssignmentController::class,'applyVacation']);//done
+            Route::get('vacation/assignment/{id}', [AssignmentController::class,'getQuestion']);
+            Route::post('vacation/assignment/{id}', [AssignmentController::class,'answerQuestion']);
 
             Route::get('vacation/for/worker',[WorkerController::class,'specialVacations']);
-
             Route::post('vacation/add/comment', [VacationController::class,'addComment']); //done
 
             Route::get('message/company/{id}',[WorkerController::class,'showMessages']);

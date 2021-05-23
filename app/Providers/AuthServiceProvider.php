@@ -56,11 +56,18 @@ class AuthServiceProvider extends ServiceProvider
                 return false;
             }
         });
-
+        Gate::define('apply-vacation',function (User $user){
+            if($user->getAttribute('user_type') === User::USER_TYPE_WORKER){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
         Gate::define('show-assignment',function (User $user,$id){
             if($user->getAttribute('user_type') === User::USER_TYPE_BUSINESSMAN){
                 $assignmentIds = Assignment::query()
-                    ->where('company_id',\auth()->id())
+                    ->where('company_id',\auth()->user()->company->id)
                     ->pluck('id');
                 foreach ($assignmentIds as $itemId){
                     if((string)$id === (string)$itemId){
